@@ -1,0 +1,53 @@
+#parent {
+  border: 1px solid #000;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgba(26, 87, 166, 1);
+  background-color: rgba(214, 230, 242, 1);
+  font-size: 12pt;
+  -webkit-border-bottom-left-radius: 15px;
+  -webkit-border-bottom-right-radius: 15px;
+  -webkit-border-top-left-radius: 15px;
+  -webkit-border-top-right-radius: 15px;
+  -moz-border-radius-bottomleft: 15px;
+  -moz-border-radius-bottomright: 15px;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-topright: 15pxs;
+}
+
+#wrapper .child1 {
+  float: left;
+  width: 85%;
+  
+}
+
+#wrapper .child2 {
+  margin-left: 88%;
+  margin-top: 5%;
+}
+
+div.clear {
+  clear: both;
+}
+.login-box{
+  justify-content: center;
+  margin: 50px;
+}
+
+.user-box{
+  text-align:left;
+  position: relative;
+  left:30px;
+}
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+  -moz-transition: opacity 0.15s linear;
+  -o-transition: opacity 0.15s linear;
+  transition: opacity 0.15s linear;
+}
+
+.fade.in {
+  opacity: 1;
+}

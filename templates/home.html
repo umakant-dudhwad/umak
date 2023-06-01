@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Heart Disease Analysis &amp; Prediction</title>
+
+    <link href="static/css/styles-merged.css" rel="stylesheet">
+    <link href="static/css/style.min.css" rel="stylesheet">
+    <link href="static/fonts/icomoon/style.css" rel="stylesheet">
+    <link href="static/css/predictor.css" rel="stylesheet">
+    <link href="static/css/back-to-top.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="js/vendor/html5shiv.min.js"></script>
+    <script src="js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        * {
+          box-sizing: border-box;
+        }
+        
+        input[type=number], select, textarea {
+          width: 20%;
+          padding: 12px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          resize: vertical;
+        }
+        
+        label {
+          padding: 12px 12px 12px 0;
+          display: inline-block;
+        }
+        
+        input[type=submit] {
+          background-color: #04AA6D;
+          color: white;
+          padding: 12px 20px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          float: center;
+        }
+        
+        input[type=submit]:hover {
+          background-color: #45a049;
+        }
+        
+        .container1 {
+          border-radius: 15px;
+        
+          padding: 40px;
+          width:100%
+        }
+        
+        .col-25 {
+          float: left;
+          width: 25%;
+          margin-top: 6px;
+        }
+        
+        .col-75 {
+          float: left;
+          width: 75%;
+          margin-top: 6px;
+        }
+        
+        /* Clear floats after the columns */
+        .row:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+        
+        /* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+          .col-25, .col-75, input[type=submit] {
+            width: 100%;
+            margin-top: 0;
+          }
+        }
+        </style>
+</head>
+
+<body>
+    
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="static/js/back-to-top.js"></script>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default probootstrap-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed"
+                    data-target="#navbar-collapse" data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Heart Disease Analysis &amp; Prediction</a>
+            </div>
+
+            <div class="navbar-collapse collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a data-nav-section="home" href="#">Home</a></li>
+                    <li><a data-nav-section="features" href="#">ABout</a></li>
+                    <li><a data-nav-section="predict" href="#">Predict</a></li>
+
+                    <li><a data-nav-section="contact" href="#">Contact</a></li>
+                    <li><a data-nav-section="contact1" href="#">Hello <b>{{request.user.first_name}}</b></a></li>
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="probootstrap-hero prohttp://localhost/probootstrap/frame/#featuresbootstrap-slant"
+        data-section="home" data-stellar-background-ratio="0.5" id="home"
+        style="background-image: url(static/img/main_back.jpg);">
+        <div class="container">
+            <div class="row intro-text">
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <h1 class="probootstrap-heading probootstrap-animate" style="color:#E0F7FA">Predict your chance of
+                        having a heart disease because prevention is better than cure!</h1>
+                    <div class="probootstrap-subheading center">
+                        <p class="probootstrap-animate"><a class="btn btn-primary" href="#predict" role="button">Check
+                                Now</a>
+                        </p>
+                        <p class="probootstrap-animate"><a class="btn btn-primary" href="{% url 'logout' %}"
+                                role="button">Logout</a>
+                        </p>
+                    </div>
+                    <!-- <a data-nav-section="logout" href="{% url 'logout' %}" class="btn btn-primary">Logout</a> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <button class="btn btn-primary" id="backToTopBtn" onclick="topFunction()" title="Go to top">
+        <span class="icon icon-align-top"></span>
+    </button>
+
+    <section class="probootstrap-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="probootstrap-service-item probootstrap-animate" data-animate-effect="fadeIn">
+                        <span class="icon icon-phone3"></span>
+                        <h2>Mobile Optimize</h2>
+                        <p>Optimized for viewing on different platforms and devices. Looks the same on every mobile,
+                            laptops, PCs and tablets. A smooth, continous flow.</p>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="probootstrap-service-item probootstrap-animate" data-animate-effect="fadeIn">
+                        <span class="icon icon-wallet2"></span>
+                        <h2>Decrease Costs</h2>
+                        <p>Examine your heart related reports by yourself. Predict the chance of having a heart disease
+                            free
+                            of cost.</p>
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="probootstrap-service-item probootstrap-animate" data-animate-effect="fadeIn">
+                        <span class="icon icon-lightbulb"></span>
+                        <h2>Smart Idea</h2>
+                        <p>Great accuracy. Accurate prediction rates. Analysis and prediction based on large samples of
+                            data.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="probootstrap-section probootstrap-bg-light" data-section="features" id="features">
+        <div class="container">
+            <div class="row text-center mb100">
+                <div class="col-md-8 col-md-offset-2 probootstrap-section-heading">
+                    <h2 class="mb30 text-black probootstrap-heading">What is a Heart Attack</h2>
+
+                </div>
+            </div>
+            <!-- END row -->
+            <div class="row mb100">
+                <div class="col-md-8 probootstrap-animate">
+                    <img alt="GitHub Page" class="img-responsive probootstrap-shadow" src="static/img/heart-attack.jpg">
+                </div>
+                <div class="col-md-4 probootstrap-section-heading">
+                    <h3 class="text-primary probootstrap-heading-2"></h3>
+                    <p>A heart attack is a medical emergency. A heart attack usually occurs when a blood clot blocks
+                        blood flow to the heart. Without blood, tissue loses oxygen and dies.Symptoms include tightness
+                        or pain in the chest, neck, back or arms, as well as fatigue, lightheadedness, abnormal
+                        heartbeat and anxiety. Women are more likely to have atypical symptoms than men.</p>
+
+                </div>
+            </div>
+            <!-- END row -->
+            <div class="row mb100">
+                <div class="col-md-4 probootstrap-section-heading">
+                    <h3 class="text-primary probootstrap-heading-2">Covid-19 infection increases risk of heart disease,
+                        blood clots, stroke: UK study</h3>
+                    <p>In patients who were hospitalised for Covid-19, there has been a 118 times rise in the number of
+                        deaths, with a 27.6 times rise in incidents of blood clots, 21.6 times rise in cases of heart
+                        failure, 17.5 times the cases of stroke and a 10 times rise in cases of arrhythmia (irregular
+                        heartbeat).</p>
+                    <!-- <ul class="probootstrap-list">
+                        <li class="probootstrap-check">Clone at <a class="probootstrap-link"
+                                href="https://github.com/Byte7/Heart-Disease-Analysis-and-Prediction.git"
+                                target="_blank">GitHub
+                                <span class="icon icon-github"></span></a></li>
+                        <li class="probootstrap-check">Open Source</li>
+                        <li class="probootstrap-check">View, modify and use freely under GNU GPL-3.0 license</li>
+                    </ul> -->
+                </div>
+                <div class="col-md-8 probootstrap-animate">
+                    <p><img alt="Analysis GitHub Page" class="img-responsive probootstrap-shadow"
+                            src="static/img/after_covid.jpg"></p>
+                </div>
+            </div>
+            <!-- END row -->
+            <div class="row mb100">
+                <div class="col-md-8 probootstrap-animate">
+                    <p><img alt="Dataset" class="img-responsive probootstrap-shadow" src="static/img/study.png"></p>
+                </div>
+                <div class="col-md-4 probootstrap-section-heading">
+                    <h3 class="text-primary probootstrap-heading-2">What's wrong with young Indians' hearts?</h3>
+                    <p>Over the years, medical researchers have gathered enough evidence to show that death due to
+                        cardiovascular disease is on the rise in India. CVDs caused more than a quarter of all deaths in
+                        the country in 2015 and are now affecting rural populations and young adults the most.
+
+
+                    </p>
+
+                </div>
+            </div>
+            <!-- END row -->
+            <div class="row mb100">
+                <div class="col-md-4 probootstrap-section-heading">
+                    <h3 class="text-primary probootstrap-heading-2">As per the World Health Organization, Cardiovascular
+                        diseases (CVD) are the major cause of mortality globally, as well as in India.</h3>
+                    <p>TIn India, more than 17 Lakh people die every year due to heart diseases and by 2030, the figure
+                        is expected to increase with 2.3 crore deaths. Around 26 percent of total deaths in India occur
+                        due to non-communicable diseases (NCD), largely referred to the heart diseases and diabetes.</p>
+
+                </div>
+                <div class="col-md-8 probootstrap-animate">
+                    <p><img alt="Analysis Language" class="img-responsive probootstrap-shadow"
+                            src="static/img/heartpng.png"></p>
+                </div>
+            </div>
+            <!-- END row -->
+        </div>
+    </section>
+    <!-- END section -->
+
+    <section class="probootstrap-section" data-section="predict" id="predict">
+        <div class="container">
+            <div class="row text-center mb100">
+                <div class="col-md-8 col-md-offset-2 probootstrap-section-heading">
+                    <h2 class="mb30 text-black probootstrap-heading">Predict your Chance of Having a Heart Disease</h2>
+                    <p>Enter the appropriate values of symptoms you face. Get the chances of you contracting heart
+                        disease
+                        based on those values.</p>
+                </div>
+            </div>
+            <!-- END row -->
+            <!-- Main Div -->
+            <div id="parent">
+                
+                    <div style="text-align: center;">
+                        <h1 class="text-black probootstrap-heading">Heart Disease Predictor</h1>
+                    </div>
+                    
+                        <!-- form here -->
+                        <div class="container1">
+                            <div style="text-align: center;">
+                                
+                            
+                            <form action="result" method="Get">
+                                {% csrf_token %}
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Age (in Years)</label>
+                                </div>
+                                <div class="col-75">
+                                  <input type="number"  name="age" placeholder="Your Age..">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Gender</label>
+                                </div>
+                                <div class="col-75">
+                                  <label>Male</label>
+                                        <input name="gender" type="radio" value="1" required="">
+                                        <label>Female</label>
+                                        <input name="gender" type="radio" value="0" required="">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Glucose (in mg/dL)</label>
+                                </div>
+                                <div class="col-75">
+                                    <input type="number" name="glucose" required="" placeholder="Your Glucose ..">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Total Cholestrol (in mg/dL)</label>
+                                </div>
+                                <div class="col-75">
+                                    <input type="number" name="totchol" required="" placeholder="Your Cholestrol..">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Systolic Blood Presssure (in mm Hg)</label>
+                                </div>
+                                <div class="col-75">
+                                    <input type="number" name="sysBP" required="" placeholder="Your Systolic BP..">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Diastolic Blood Pressure (in mm Hg)</label>
+                                </div>
+                                <div class="col-75">
+                                    <input type="number" name="diaBP" required="" placeholder="Your Diastolic BP..">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Did you have Prevalent Hypternsiveness?</label>
+                                </div>
+                                <div class="col-75">
+                                    <label>Yes</label>
+                                        <input name="Prevalenthyp" type="radio" value="1" required="">
+                                        <label>No</label>
+                                        <input name="Prevalenthyp" type="radio" value="0" required="">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Do you consume Diabetes medicine?</label>
+                                </div>
+                                <div class="col-75">
+                                    <label>Yes</label>
+                                        <input name="diabetes" type="radio" value="1" required="">
+                                        <label>No</label>
+                                        <input name="diabetes" type="radio" value="0" required="">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Do you consume Blood Pressure medicine?</label>
+                                </div>
+                                <div class="col-75">
+                                    <label>Yes</label>
+                                        <input name="BP" type="radio" value="1" required="">
+                                        <label>No</label>
+                                        <input name="BP" type="radio" value="0" required="">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-25">
+                                    <label>Do you Smoke Cigarettes? If yes, then how many per day</label>
+                                </div>
+                                <div class="col-75">
+                                    <input type="number" name="cigsPerDay" required="" placeholder="Cigarettes Consumed per day..">
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div style="text-align: center;">
+                                <input type="submit" value="Submit">
+                                </div>
+                              </div>
+                            </form>
+                        </div>
+                          </div>
+                        {% comment %} <div class="container">
+                            <form action="result" method="Get">
+                                {% csrf_token %}
+                                <div class="user-box">
+                                    <label>Age</label>
+                                    <input type="number" name="age" required="" style="
+                            height:25px;
+                            width: 250px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:205px;
+                            ">
+                                </div>
+                                <div class="user-box">
+                                    <label>Gender</label>
+                                    <span style="position: relative;
+                            left:205px;">
+                                        <label>Male</label>
+                                        <input name="gender" type="radio" value="1" required="">
+                                        <label>Female</label>
+                                        <input name="gender" type="radio" value="0" required="">
+                                    </span>
+                                </div>
+                                <div class="user-box">
+                                    <label>Glucose</label>
+                                    <input type="number" name="glucose" required="" style="
+                            height:25px;
+                            width: 250px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:170px;
+                            ">
+                                </div>
+                                <div class="user-box">
+                                    <label>Total Cholestrol</label>
+                                    <input type="number" name="totchol" required="" style="
+                            height:25px;
+                            width: 250px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:113px;
+                            ">
+                                </div>
+                                <div class="user-box">
+                                    <label>Systolic Blood Presssure</label>
+                                    <input type="number" name="sysBP" required="" style="
+                            height:25px;
+                            width: 250px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:40px;
+                            ">
+                                </div>
+                                <div class="user-box">
+                                    <label>Diastolic Blood Pressure</label>
+                                    <input type="number" name="diaBP" required="" style="
+                            height:25px;
+                            width: 250px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:45px;
+                            ">
+                                </div>
+                                <div class="user-box">
+                                    <label>PrevalentHYP</label>
+                                    <span style="position: relative;
+                            left:165px;">
+                                        <label>Yes</label>
+                                        <input name="Prevalenthyp" type="radio" value="1" required="">
+                                        <label>No</label>
+                                        <input name="Prevalenthyp" type="radio" value="0" required="">
+                                    </span>
+                                </div>
+                                <div class="user-box">
+                                    <label>Diabetes</label>
+                                    <span style="position: relative;
+                            left:205px;">
+                                        <label>Yes</label>
+                                        <input name="diabetes" type="radio" value="1" required="">
+                                        <label>No</label>
+                                        <input name="diabetes" type="radio" value="0" required="">
+                                    </span>
+                                </div>
+                                <div class="user-box">
+                                    <label>BPmeds</label>
+                                    <span style="position: relative;
+                            left:205px;">
+                                        <label>Yes</label>
+                                        <input name="BP" type="radio" value="1" required="">
+                                        <label>No</label>
+                                        <input name="BP" type="radio" value="0" required="">
+                                    </span>
+                                </div>
+
+                                <div class="user-box">
+                                    <label>Cigarettes PerDay</label>
+                                    <input type="number" name="cigsPerDay" required="" style="
+                            height:25px;
+                            width: 250px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:95px;
+                            ">
+                                </div>
+
+                                <div class="user-box">
+
+                                    <input type="submit" style="
+                            height:40px;
+                            width: 80px;
+                            border-radius: 35px;
+                            position: relative;
+                            left:200px;
+                            ">
+                                </div>
+                            </form>
+                        </div> {% endcomment %}
+                    </div>
+                    <div class="child2">
+                        <script>
+                            // const width = 100;
+                            // const height = 400;
+
+                            const holder = d3.select(".child2")
+                                .append("svg")
+                                .attr("width", width)
+                                .attr("height", height);
+
+                            // draw a rectangle
+                            const y0 = 20;
+                            const height0 = 380;
+                            holder.append("rect")
+                                .attr("x", 5)
+                                .attr("y", y0 + height0)
+                                .style("fill", "rgb(0,255,0)")
+                                .attr("height", 0)
+                                .attr("width", 90);
+
+                            // draw a container rectangle
+                            holder.append("rect")
+                                .attr("x", 5)
+                                .attr("y", y0)
+                                .style("fill", "none")
+                                .style("stroke", "lightblue")
+                                .style("stroke-width", 4)
+                                .attr("height", height0)
+                                .attr("width", 90);
+
+                            // add text inside rectangle
+                            holder.append("text")
+                                .text("0.00%")
+                                .attr("x", 12)
+                                .attr("y", y0 + height0 - 10)
+                                .attr("fill", "black")
+                                .attr("font-family", "Verdana")
+                                .attr("font-size", "20");
+
+                            // initialize
+                            let val01 = document.getElementById("nSex1").value;
+                            let val02 = document.getElementById("nRestbp1").value;
+                            let val03 = document.getElementById("nThalach1").value;
+                            let val04 = document.getElementById("nCa1").value;
+                            let val05 = document.getElementById("nCp1").value;
+                            let val06 = document.getElementById("nSlope1").value;
+                            let val07 = document.getElementById("nThal1").value;
+                            updateOne(val01, 0);
+
+                            // Check for changes in the inputs and update output bar
+                            d3.select("#nSex1").on("input", function () {
+                                updateOne(+this.value, 1);
+                            });
+                            d3.select("#nSex2").on("input", function () {
+                                updateOne(+this.value, 1);
+                            });
+                            d3.select("#nRestbp1").on("input", function () {
+                                updateOne(+this.value, 2);
+                            });
+                            d3.select("#nRestbp2").on("input", function () {
+                                updateOne(+this.value, 2);
+                            });
+                            d3.select("#nThalach1").on("input", function () {
+                                updateOne(+this.value, 3);
+                            });
+                            d3.select("#nThalach2").on("input", function () {
+                                updateOne(+this.value, 3);
+                            });
+                            d3.select("#nCa1").on("input", function () {
+                                updateOne(+this.value, 4);
+                            });
+                            d3.select("#nCa2").on("input", function () {
+                                updateOne(+this.value, 4);
+                            });
+                            d3.select("#nCp1").on("input", function () {
+                                updateOne(+this.value, 5);
+                            });
+                            d3.select("#nCp2").on("input", function () {
+                                updateOne(+this.value, 5);
+                            });
+                            d3.select("#nSlope1").on("input", function () {
+                                updateOne(+this.value, 6);
+                            });
+                            d3.select("#nSlope2").on("input", function () {
+                                updateOne(+this.value, 6);
+                            });
+                            d3.select("#nThal1").on("input", function () {
+                                updateOne(+this.value, 7);
+                            });
+                            d3.select("#nThal2").on("input", function () {
+                                updateOne(+this.value, 7);
+                            });
+
+                            // Update the heart disease probability
+                            function updateOne(value, index) {
+
+                                if (index === 1) {
+                                    val01 = value;
+                                } else if (index === 2) {
+                                    val02 = value;
+                                } else if (index === 3) {
+                                    val03 = value;
+                                } else if (index === 4) {
+                                    val04 = value;
+                                } else if (index === 5) {
+                                    val05 = value;
+                                } else if (index === 6) {
+                                    val06 = value;
+                                } else if (index === 7) {
+                                    val07 = value;
+                                } else if (index === -1) {
+                                    // Set everything back to default state:
+                                    val01 = document.getElementById("nSex1").defaultValue;
+                                    document.getElementById("nSex1").value = val01;
+                                    document.getElementById("nSex2").value = val01;
+                                    val02 = document.getElementById("nRestbp1").defaultValue;
+                                    document.getElementById("nRestbp1").value = val02;
+                                    document.getElementById("nRestbp2").value = val02;
+                                    val03 = document.getElementById("nThalach1").defaultValue;
+                                    document.getElementById("nThalach1").value = val03;
+                                    document.getElementById("nThalach2").value = val03;
+                                    val04 = document.getElementById("nCa1").defaultValue;
+                                    document.getElementById("nCa1").value = val04;
+                                    document.getElementById("nCa2").value = val04;
+                                    val05 = document.getElementById("nCp1").defaultValue;
+                                    document.getElementById("nCp1").value = val05;
+                                    document.getElementById("nCp2").value = val05;
+                                    val06 = document.getElementById("nSlope1").defaultValue;
+                                    document.getElementById("nSlope1").value = val06;
+                                    document.getElementById("nSlope2").value = val06;
+                                    val07 = document.getElementById("nThal1").defaultValue;
+                                    document.getElementById("nThal1").value = val07;
+                                    document.getElementById("nThal2").value = val07;
+                                }
+
+                                // Standardize the continuous features:
+                                let srbp_val = (val02 - 131.7157) / 17.7478;
+                                let sthalach_val = (val03 - 149.3278) / 23.1211;
+                                let sca_val = (val04 - 0.6722) / 3.0;
+
+                                // Disentangle the categorical features:
+                                let cp_contr = 0.0;
+                                if (val05 === 1) {
+                                    cp_contr = -2.2318;
+                                } else if (val05 === 2) {
+                                    cp_contr = -1.2681;
+                                } else if (val05 === 3) {
+                                    cp_contr = -2.1124;
+                                }
+                                let slope_contr = 0.0;
+                                if (val06 === 1) {
+                                    slope_contr = -1.4726;
+                                }
+                                let thal_contr = 0.0;
+                                if (val07 === 1) {
+                                    thal_contr = 1.5009;
+                                }
+
+                                // Compute log-odds, then probability:
+                                let scprod = 1.4361 * val01 + 0.4415 * srbp_val - 0.4431 * sthalach_val + 3.7984 * sca_val + cp_contr + slope_contr + thal_contr;
+                                let drec = 1.0 / (1.0 + Math.exp(-scprod));
+                                let drecs = height0 * drec;
+                                drec *= 100;
+
+                                // Update plot:
+                                let rcolor = percentToRGB(drec);
+                                holder.select("rect")
+                                    .attr("y", y0 + height0 - drecs)
+                                    .attr("height", drecs)
+                                    .style("fill", rcolor);
+
+                                holder.select("text")
+                                    .text(function () {
+                                        return parseFloat(Math.round(drec * 100) / 100).toFixed(2) + "%";
+                                    });
+
+                            }
+
+                            function percentToRGB(percent) {
+                                if (percent === 100) {
+                                    percent = 99
+                                }
+                                let r, g, b;
+
+                                if (percent < 50) {
+                                    // green to yellow
+                                    r = Math.floor(255 * (percent / 50));
+                                    g = 255;
+
+                                } else {
+                                    // yellow to red
+                                    r = 255;
+                                    g = Math.floor(255 * ((50 - percent % 50) / 50));
+                                }
+                                b = 0;
+
+                                return "rgb(" + r + "," + g + "," + b + ")";
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </section>
+    <!-- END section -->
+
+
+
+    <section class="probootstrap-section probootstrap-bg-light" data-section="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="" class="probootstrap-form">
+                        <h2 class="text-black mt0">Get In Touch</h2>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Your Name" type="text">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Your Email" type="email">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Your Phone" type="number">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" cols="30" placeholder="Write a Message" rows="10"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input class="btn btn-primary" type="submit" value="Send Message">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-3 col-md-push-1">
+                    <ul class="probootstrap-contact-details">
+                        <li>
+                            <b><span class="text-uppercase">By</span></b><br>
+                            Harshal Pohakar <br>
+                            Priti Kadav <br>
+                            Umakant Dudhwad <br>
+                            Durgesh Mamdapure <br>
+
+
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="col-md-3 col-md-push-1">
+                    <ul class="probootstrap-contact-details">
+                        <li>
+                            <b><span class="text-uppercase">Guided by</span></b><br>
+                            Prof.Jyotsna Nanajkar
+
+
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <script src="static/js/scripts.min.js"></script>
+    <script src="static/js/custom.js"></script>
+
+</body>
+
+</html>
